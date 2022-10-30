@@ -17,10 +17,10 @@ from django.contrib import admin
 from django.urls import path
 from rest_framework import routers
 
-from foods.views import FoodAPIListView, FoodAPIView
+from foods.views import FoodListSerializerAPIListView, FoodAPIView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/v1/foods/', FoodAPIListView.as_view()),
+    path('api/v1/foods/', FoodListSerializerAPIListView.as_view()),
     # path('api/v1/foods/', FoodAPIView.as_view()),
 ]

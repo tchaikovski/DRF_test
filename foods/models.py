@@ -1,7 +1,6 @@
 from django.db import models
 
 from model_utils.models import TimeStampedModel
-from rest_framework import serializers
 
 
 class FoodCategory(TimeStampedModel):
@@ -41,25 +40,7 @@ class Food(TimeStampedModel):
     is_publish = models.BooleanField(verbose_name='Опубликовано', default=True)
 
     additional = models.ManyToManyField('self', verbose_name='Дополнительные товары', symmetrical=False,
-                                        related_name='additional_from', blank=True)
+                                        related_name='additional_from', related_query_name='addadditio', blank=True)
 
     def __str__(self):
         return self.name_ru
-
-
-class FoodSerializer(serializers.ModelSerializer):
-    additional = serializers.SlugRelatedField(many=True, read_only=True, slug_field='internal_code')
-
-    class Meta:
-        model = Food
-        fields = ('internal_code', 'code', 'name_ru', 'description_ru', 'description_en',
-                  'description_ch', 'is_vegan', 'is_special', 'cost', 'additional', 'is_publish')
-
-
-class FoodListSerializer(serializers.ModelSerializer):
-    foods = FoodSerializer(source='food', many=True, read_only=True)
-
-    class Meta:
-        model = FoodCategory
-        fields = ('id', 'name_ru', 'name_en', 'name_ch', 'order_id', 'foods')
-
